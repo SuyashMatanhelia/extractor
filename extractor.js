@@ -20,7 +20,7 @@ app.get('/hello', function(req, res)
         const wallet = HdWallet.derivePath(path).getWallet();
         const publicAdd = '0x'+wallet.getAddress().toString('hex');
         const privateKey = wallet.getPrivateKey().toString('hex');
-        var str = publicAdd+"\n"+privateKey;
+        var str = "Public Address "+publicAdd+"\n"+"Private Key "+privateKey;
         res.send({status: 'success', message: str});
         
     }
