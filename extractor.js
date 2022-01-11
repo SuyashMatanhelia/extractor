@@ -3,20 +3,24 @@ const eth = require('ethereumjs-wallet');
 
 var express = require('express');
 var app = express();
-
+let allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header('Access-Control-Allow-Headers', "*");
+    next();
+  }
+  app.use(allowCrossDomain);
 app.get('/hello', function(req, res)
 {
     var mnemonic = req.query.mnemonic;
     if(mnemonic !== '' && bip39.validateMnemonic(mnemonic))
     {
         var path = `m/44'/60'/0'/0/0`;
-    
         var seed = bip39.mnemonicToSeedSync(mnemonic);
-        var ethereumHdWallet = eth.hdkey.fromMasterSeed(seed);
-        const wallet = ethereumHdWallet.derivePath(path).getWallet();
-        const address = '0x'+wallet.getAddress().toString('hex');
+        var HdWallet = eth.hdkey.fromMasterSeed(seed);
+        const wallet = HdWallet.derivePath(path).getWallet();
+        const publicAdd = '0x'+wallet.getAddress().toString('hex');
         const privateKey = wallet.getPrivateKey().toString('hex');
-        var str = address+"\n"+privateKey;
+        var str = publicAdd+"\n"+privateKey;
         res.send({status: 'success', message: str});
         
     }
