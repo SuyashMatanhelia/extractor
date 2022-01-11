@@ -18,8 +18,12 @@ app.get('/hello', function(req, res)
         const privateKey = wallet.getPrivateKey().toString('hex');
         var str = address+"\n"+privateKey;
         res.send({status: 'success', message: str});
+        
+    }
+    else{
+        res.send({status: 'failure', message: 'Error'})
     }
 });
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
 
 
